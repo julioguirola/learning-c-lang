@@ -46,22 +46,18 @@ void list_remove(struct list *lst, int value) {
     }
 
     struct lnode *aux;
-
-    if (lst->tail->value == value) {
-        for (aux = lst->head; aux != NULL; aux = aux->next) {
-            if (aux->next->next == NULL) {
-                lst->tail = aux;
-                return;
-            }
-        }
-    }
-
     struct lnode *prev = lst->head;
 
     for (aux = lst->head; aux != NULL; aux = aux->next) {
         if (aux->value == value) {
-            prev->next = prev->next->next;
-            return;
+            if (aux->next == NULL) {
+                prev->next = NULL;
+                lst->tail = prev;
+                return;
+            } else {
+                prev->next = prev->next->next;
+                return;
+            }
         }
         prev = aux;
     }
